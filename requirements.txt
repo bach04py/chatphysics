@@ -1,0 +1,16 @@
+langchain==0.2.14
+langchain-core==0.2.36
+langchain-community==0.2.12
+langchain-text-splitters==0.2.2
+langsmith==0.1.147
+
+langchain-huggingface
+qdrant-client
+langchain-qdrant
+sentence-transformers
+
+fastapi
+uvicorn
+streamlit
+requests
+python-dotenv
