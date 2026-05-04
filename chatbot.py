@@ -1,195 +1,244 @@
 import os
-import asyncio
+from typing import TypedDict
 from dotenv import load_dotenv
+
+from langgraph.graph import StateGraph, END
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.llms import Ollama
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import Qdrant
+
+from qdrant_client import QdrantClient
+
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, pipeline
+from sentence_transformers import SentenceTransformer
+from rank_bm25 import BM25Okapi
+
+import torch
+import numpy as np
 
 # =========================
 # ENV
 # =========================
 load_dotenv()
 
-MODEL_NAME = os.getenv("MODEL_NAME", "llama3")
-DATA_PATH = os.getenv("DATA_PATH", "./data/physics.pdf")
-VECTOR_DB_PATH = "./faiss_index"
+DATA_PATH = "./data/physics.pdf"
+QDRANT_PATH = "./qdrant_db"
 
 # =========================
-# LLM
+# 4BIT QUANT MODEL
 # =========================
-def build_llm(num_predict=100, temperature=0.2):
-    return Ollama(
-        model=MODEL_NAME,
-        temperature=temperature,
-        num_predict=num_predict
+MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.float16,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4"
+)
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    quantization_config=bnb_config,
+    device_map="auto"
+)
+
+pipe = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=150,
+    temperature=0.2
+)
+
+# =========================
+# EMBEDDING
+# =========================
+EMBEDDING = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+
+RERANK_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+
+# =========================
+# QDRANT
+# =========================
+def load_db():
+    client = QdrantClient(path=QDRANT_PATH)
+
+    try:
+        db = Qdrant(client=client, collection_name="physics", embedding=EMBEDDING)
+        db.similarity_search("test", k=1)
+        return db, []
+    except:
+        pass
+
+    docs = PyPDFLoader(DATA_PATH).load()
+
+    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    docs = splitter.split_documents(docs)
+
+    db = Qdrant.from_documents(
+        docs,
+        EMBEDDING,
+        client=client,
+        collection_name="physics"
     )
 
-async def llm_call(llm, prompt):
-    loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(None, llm.invoke, prompt)
+    return db, docs
 
 # =========================
-# DATA
+# HYBRID RETRIEVER
 # =========================
-def load_pdf():
-    return PyPDFLoader(DATA_PATH).load()
+class HybridRetriever:
 
-def split_docs(docs):
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
-        chunk_overlap=30
+    def __init__(self, docs, db):
+        self.docs = docs
+        self.db = db
+        self.bm25 = BM25Okapi([d.page_content.split() for d in docs]) if docs else None
+
+    def retrieve(self, query, k=4):
+        vec_docs = self.db.similarity_search(query, k=k)
+
+        if self.bm25:
+            scores = self.bm25.get_scores(query.split())
+            idx = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
+            bm_docs = [self.docs[i] for i in idx]
+            vec_docs.extend(bm_docs)
+
+        return vec_docs[:k]
+
+# =========================
+# RERANK
+# =========================
+def rerank(query, docs, k=2):
+
+    q_vec = RERANK_MODEL.encode([query])[0]
+
+    scored = []
+    for d in docs:
+        d_vec = RERANK_MODEL.encode([d.page_content])[0]
+        scored.append((np.dot(q_vec, d_vec), d))
+
+    scored.sort(reverse=True)
+
+    return [d for _, d in scored[:k]]
+
+# =========================
+# TOOLS
+# =========================
+def academic_solver(q):
+    if "lab" in q.lower():
+        return "No. Lab = 0 → fail."
+    return None
+
+def physics_solver(q):
+    if "resistance" in q.lower():
+        return "R = r/3"
+    return None
+
+# =========================
+# STATE
+# =========================
+class State(TypedDict, total=False):
+    query: str
+    route: str
+    context: str
+    answer: str
+    prompt: str
+
+# =========================
+# NODES
+# =========================
+def planner(state):
+    q = state["query"].lower()
+
+    if "lab" in q:
+        return {**state, "route": "academic"}
+    if "resistance" in q:
+        return {**state, "route": "physics"}
+
+    return {**state, "route": "rag"}
+
+def academic_node(state):
+    return {**state, "answer": academic_solver(state["query"])}
+
+def physics_node(state):
+    return {**state, "answer": physics_solver(state["query"])}
+
+def rag_node(state):
+    docs = RETRIEVER.retrieve(state["query"])
+    docs = rerank(state["query"], docs)
+
+    context = "\n".join([d.page_content[:200] for d in docs])
+    return {**state, "context": context}
+
+def llm_node(state):
+    prompt = f"""
+Context:
+{state.get("context","")}
+
+Question:
+{state["query"]}
+
+Answer clearly step-by-step:
+"""
+    return {**state, "prompt": prompt}
+
+# =========================
+# GRAPH
+# =========================
+def build_graph():
+    g = StateGraph(State)
+
+    g.add_node("planner", planner)
+    g.add_node("academic", academic_node)
+    g.add_node("physics", physics_node)
+    g.add_node("rag", rag_node)
+    g.add_node("llm", llm_node)
+
+    g.set_entry_point("planner")
+
+    g.add_conditional_edges(
+        "planner",
+        lambda s: s["route"],
+        {
+            "academic": "academic",
+            "physics": "physics",
+            "rag": "rag"
+        }
     )
-    return splitter.split_documents(docs)
 
-def build_db(docs):
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
+    g.add_edge("rag", "llm")
+    g.add_edge("academic", END)
+    g.add_edge("physics", END)
+    g.add_edge("llm", END)
 
-    if os.path.exists(VECTOR_DB_PATH):
-        return FAISS.load_local(
-            VECTOR_DB_PATH,
-            embeddings,
-            allow_dangerous_deserialization=True
-        )
-
-    db = FAISS.from_documents(docs, embeddings)
-    db.save_local(VECTOR_DB_PATH)
-    return db
+    return g.compile()
 
 # =========================
-# ROUTER (multi-agent logic)
-# =========================
-def classify(query):
-    q = query.lower()
-
-    if any(k in q for k in ["calculate", "tính", "find"]):
-        return "reasoning"
-
-    if any(k in q for k in ["relationship", "related", "liên hệ"]):
-        return "relation"
-
-    return "simple"
-
-# =========================
-# MEMORY
-# =========================
-class Memory:
-    def __init__(self):
-        self.history = []
-
-    def add(self, user, bot):
-        self.history.append((user, bot))
-        self.history = self.history[-3:]
-
-    def get_context(self):
-        return "\n".join([f"User:{u}\nBot:{b}" for u, b in self.history])
-
-# =========================
-# MAIN CHATBOT
+# CHATBOT
 # =========================
 class PhysicsChatbot:
 
     def __init__(self):
-        docs = split_docs(load_pdf())
-        self.db = build_db(docs)
-        self.memory = Memory()
-        self.cache = {}
+        global DB, RETRIEVER
+        DB, docs = load_db()
+        RETRIEVER = HybridRetriever(docs, DB)
+        self.graph = build_graph()
 
-    def select_llm(self, route):
-        if route == "simple":
-            return build_llm(60, 0.1)
-        if route == "relation":
-            return build_llm(120, 0.2)
-        return build_llm(200, 0.3)
+    def stream(self, query):
+        result = self.graph.invoke({"query": query})
 
-    async def ask_async(self, query):
+        if result.get("answer"):
+            yield result["answer"]
+            return
 
-        if query in self.cache:
-            return self.cache[query]
+        out = pipe(result["prompt"])[0]["generated_text"]
+        yield out
 
-        route = classify(query)
-        llm = self.select_llm(route)
-
-        docs = self.db.similarity_search(query, k=2)
-        context = "\n".join([d.page_content[:200] for d in docs])
-
-        memory_context = self.memory.get_context()
-
-        # =========================
-        # SIMPLE
-        # =========================
-        if route == "simple":
-            prompt = f"""
-Answer briefly.
-
-Context:
-{context}
-
-Conversation:
-{memory_context}
-
-Question:
-{query}
-"""
-            answer = await llm_call(llm, prompt)
-
-        # =========================
-        # RELATION
-        # =========================
-        elif route == "relation":
-            prompt = f"""
-Explain relationship clearly.
-
-Context:
-{context}
-
-Question:
-{query}
-"""
-            answer = await llm_call(llm, prompt)
-
-        # =========================
-        # REASONING (multi-step)
-        # =========================
-        else:
-            summary = await llm_call(
-                build_llm(100, 0.2),
-                f"Summarize:\n{context}"
-            )
-
-            answer = await llm_call(
-                llm,
-                f"""
-Solve step by step.
-
-Question:
-{query}
-
-Context:
-{summary}
-"""
-            )
-
-        result = {
-            "answer": answer,
-            "route": route,
-            "context": context
-        }
-
-        self.memory.add(query, answer)
-        self.cache[query] = result
-
-        return result
-
-    def ask(self, query):
-        return asyncio.run(self.ask_async(query))
-
-# =========================
-# FACTORY (fix ImportError)
-# =========================
 def build_chatbot():
     return PhysicsChatbot()

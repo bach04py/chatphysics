@@ -1,0 +1,75 @@
+[
+  {
+    "premises-NL": [
+      "If a curriculum is well-structured and has exercises, it enhances student engagement.",
+      "If a curriculum enhances engagement and provides advanced resources, it enhances critical thinking.",
+      "If a faculty prioritizes pedagogical training, the curriculum is well-structured.",
+      "The faculty prioritizes pedagogical training.",
+      "The curriculum has exercises.",
+      "The curriculum provides advanced resources."
+    ],
+    "premises-FOL": [
+      "ForAll(c, (well_structured(c) ∧ has_exercises(c)) → enhances_engagement(c))",
+      "ForAll(c, (enhances_engagement(c) ∧ advanced_resources(c)) → enhances_critical_thinking(c))",
+      "ForAll(c, faculty_training → well_structured(c))",
+      "faculty_training",
+      "has_exercises(curriculum)",
+      "advanced_resources(curriculum)"
+    ],
+    "questions": [
+      "Based on the premises, what can we conclude?\nA. It enhances engagement only\nB. It enhances critical thinking\nC. It lacks exercises\nD. It cannot enhance engagement",
+      "Does the curriculum enhance critical thinking?"
+    ],
+    "answers": ["B", "Yes"],
+    "explanation": [
+      "Faculty training → well-structured; with exercises → engagement; with resources → critical thinking.",
+      "All conditions satisfied → critical thinking."
+    ]
+  },
+
+  {
+    "premises-NL": [
+      "If a student studies regularly, they pass exams.",
+      "If a student passes exams, they graduate.",
+      "John studies regularly."
+    ],
+    "premises-FOL": [
+      "ForAll(x, studies(x) → pass(x))",
+      "ForAll(x, pass(x) → graduate(x))",
+      "studies(John)"
+    ],
+    "questions": [
+      "What can we conclude?\nA. John fails\nB. John passes\nC. John graduates\nD. John studies",
+      "Does John graduate?"
+    ],
+    "answers": ["C", "Yes"],
+    "explanation": [
+      "Studies → pass → graduate.",
+      "John satisfies both conditions."
+    ]
+  },
+
+  {
+    "premises-NL": [
+      "If lab score is zero, the student fails.",
+      "If a student fails, they cannot get grade B.",
+      "Alice has lab score zero."
+    ],
+    "premises-FOL": [
+      "ForAll(x, lab_zero(x) → fail(x))",
+      "ForAll(x, fail(x) → not_B(x))",
+      "lab_zero(Alice)"
+    ],
+    "questions": [
+      "What is true?\nA. Alice passes\nB. Alice gets B\nC. Alice cannot get B\nD. Alice has high score",
+      "Can Alice get grade B?"
+    ],
+    "answers": ["C", "No"],
+    "explanation": [
+      "lab=0 → fail → not B",
+      "Therefore cannot get B"
+    ]
+  }
+
+
+]

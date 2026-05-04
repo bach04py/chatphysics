@@ -1,202 +1,217 @@
-import time
 import json
-from typing import List, Dict
-from chatbot import PhysicsChatbot
+import re
+import time
+from tqdm import tqdm
+from chatbot import build_chatbot
+
+# =========================
+# CONFIG
+# =========================
+LEADERBOARD_FILE = "leaderboard.json"
+
+bot = build_chatbot()
+
+# =========================
+# HELPERS
+# =========================
+
+def normalize(text):
+    return text.lower()
+
+def extract_answer(text):
+    match = re.search(r"\b([A-D])\b", text.upper())
+    if match:
+        return match.group(1)
+
+    if "yes" in text.lower():
+        return "Yes"
+    if "no" in text.lower():
+        return "No"
+
+    num = re.search(r"[-+]?\d*\.?\d+", text)
+    if num:
+        return num.group(0)
+
+    return None
+
+# =========================
+# XAI SCORING
+# =========================
+
+def keyword_score(pred, gt):
+    pred = normalize(pred)
+    gt = normalize(gt)
+
+    gt_words = set(gt.split())
+    pred_words = set(pred.split())
+
+    overlap = gt_words & pred_words
+
+    return len(overlap) / max(len(gt_words), 1)
+
+
+def reasoning_score(pred, gt_explanation):
+    scores = []
+
+    for gt in gt_explanation:
+        scores.append(keyword_score(pred, gt))
+
+    return sum(scores) / len(scores)
 
 
 # =========================
-# TEST DATASET
+# LOGIC EVAL
 # =========================
-TEST_CASES = [
 
-    {
-        "type": "theory",
-        "question": "What is Newton's second law?",
-        "keywords": ["force", "mass", "acceleration"]
-    },
-    {
-        "type": "graph",
-        "question": "How is force related to acceleration?",
-        "keywords": ["force", "acceleration"]
-    },
-    {
-        "type": "calculation",
-        "question": "A 4 kg object is acted on by a 20 N force. Find acceleration.",
-        "keywords": ["5"]
-    },
-    {
-        "type": "theory",
-        "question": "Define kinetic energy.",
-        "keywords": ["mass", "velocity"]
-    },
-    {
-        "type": "calculation",
-        "question": "Calculate kinetic energy of a 2 kg object moving at 3 m/s.",
-        "keywords": ["9"]
-    },
-    {
-        "type": "memory",
-        "question": "What is force?",
-        "keywords": ["mass", "acceleration"]
-    },
-    {
-        "type": "memory",
-        "question": "What is its formula?",
-        "keywords": ["f", "ma"]
-    },
-    {
-        "type": "multi",
-        "question": "Explain step-by-step how energy is conserved in a pendulum.",
-        "keywords": ["energy", "kinetic", "potential"]
-    }
-]
+def eval_logic(data):
+
+    correct = 0
+    total = 0
+    reasoning_scores = []
+
+    for item in tqdm(data):
+
+        context = "\n".join(item["premises-NL"])
+
+        for i, q in enumerate(item["questions"]):
+
+            prompt = f"""
+Premises:
+{context}
+
+Question:
+{q}
+
+Answer with reasoning:
+"""
+
+            response = "".join(bot.stream_answer(prompt))
+
+            pred = extract_answer(response)
+            gt = item["answers"][i]
+
+            if str(pred) == str(gt):
+                correct += 1
+
+            # XAI scoring
+            r_score = reasoning_score(response, item["explanation"])
+            reasoning_scores.append(r_score)
+
+            total += 1
+
+    acc = correct / total
+    avg_reasoning = sum(reasoning_scores) / len(reasoning_scores)
+
+    return acc, avg_reasoning
 
 
 # =========================
-# SCORING
+# PHYSICS EVAL
 # =========================
-def keyword_score(answer: str, keywords: List[str]) -> int:
-    answer = answer.lower()
-    return sum(1 for kw in keywords if kw.lower() in answer)
 
+def eval_physics(data):
 
-def normalize(score: int, total: int):
-    return round(score / total, 2)
+    correct = 0
+    total = 0
+    reasoning_scores = []
 
+    for item in tqdm(data):
 
-# =========================
-# EVALUATION
-# =========================
-def evaluate(bot: PhysicsChatbot, debug=True, save_log=True):
+        response = "".join(bot.stream_answer(item["question"]))
 
-    results = []
+        pred = extract_answer(response)
+        gt = item["answer"]
 
-    print("\n=== RUNNING EVALUATION ===\n")
+        try:
+            if abs(float(pred) - float(gt)) < 1e-2:
+                correct += 1
+        except:
+            pass
 
-    for i, case in enumerate(TEST_CASES):
+        r_score = keyword_score(response, item["cot"])
+        reasoning_scores.append(r_score)
 
-        q = case["question"]
-        expected = case["keywords"]
+        total += 1
 
-        print(f"[{i+1}] {q}")
+    acc = correct / total
+    avg_reasoning = sum(reasoning_scores) / len(reasoning_scores)
 
-        # =========================
-        # RUN BOT
-        # =========================
-        start = time.time()
-        output = bot.ask(q)
-        latency = round(time.time() - start, 2)
-
-        # =========================
-        # HANDLE OUTPUT
-        # =========================
-        if isinstance(output, dict):
-            answer = output.get("answer", "")
-            q_type = output.get("type", "unknown")
-            context = output.get("context", "")
-            graph = output.get("graph", "")
-            summary = output.get("summary", "")
-            reasoning = output.get("reasoning", "")
-        else:
-            answer = output
-            q_type = "unknown"
-            context = graph = summary = reasoning = ""
-
-        # =========================
-        # SCORING
-        # =========================
-        score = keyword_score(answer, expected)
-        norm = normalize(score, len(expected))
-
-        # =========================
-        # DEBUG PRINT
-        # =========================
-        if debug:
-            print("="*70)
-
-            print(f"🧠 TYPE: {q_type}")
-
-            print("\n📥 CONTEXT:")
-            print(context[:500])
-
-            print("\n🕸 GRAPH:")
-            print(graph[:300])
-
-            print("\n📚 SUMMARY:")
-            print(summary[:300])
-
-            print("\n🧮 REASONING:")
-            print(reasoning[:300])
-
-            print("\n🤖 ANSWER:")
-            print(answer)
-
-            print(f"\n📊 Score: {score}/{len(expected)} | {norm}")
-            print(f"⏱ Latency: {latency}s")
-
-            print("="*70, "\n")
-
-        # =========================
-        # SAVE RESULT
-        # =========================
-        result = {
-            "question": q,
-            "type": case["type"],
-            "predicted_type": q_type,
-            "score": score,
-            "normalized": norm,
-            "latency": latency,
-            "answer": answer,
-            "context": context,
-            "graph": graph,
-            "summary": summary,
-            "reasoning": reasoning
-        }
-
-        results.append(result)
-
-    # =========================
-    # SAVE LOG
-    # =========================
-    if save_log:
-        with open("evaluation_log.json", "w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
-
-    return results
+    return acc, avg_reasoning
 
 
 # =========================
-# SUMMARY
+# LEADERBOARD
 # =========================
-def summarize(results: List[Dict]):
 
-    total = len(results)
-    avg_score = sum(r["normalized"] for r in results) / total
+def save_result(result):
 
-    print("\n=== SUMMARY ===")
-    print(f"Overall Score: {round(avg_score, 2)}")
+    try:
+        with open(LEADERBOARD_FILE, "r") as f:
+            board = json.load(f)
+    except:
+        board = []
 
-    # breakdown by type
-    by_type = {}
+    board.append(result)
 
-    for r in results:
-        t = r["type"]
-        if t not in by_type:
-            by_type[t] = []
-        by_type[t].append(r["normalized"])
+    with open(LEADERBOARD_FILE, "w") as f:
+        json.dump(board, f, indent=2)
 
-    print("\nBreakdown:")
-    for t, vals in by_type.items():
-        print(f"{t}: {round(sum(vals)/len(vals), 2)}")
+
+def show_leaderboard():
+
+    try:
+        with open(LEADERBOARD_FILE) as f:
+            board = json.load(f)
+    except:
+        print("No leaderboard yet")
+        return
+
+    board = sorted(board, key=lambda x: x["score"], reverse=True)
+
+    print("\n🏆 LEADERBOARD")
+    print("-" * 40)
+
+    for i, r in enumerate(board[:5]):
+        print(f"{i+1}. {r['name']} | Score: {r['score']:.3f}")
 
 
 # =========================
 # MAIN
 # =========================
+
 if __name__ == "__main__":
 
-    bot = PhysicsChatbot()
+    with open("logic_dataset.json") as f:
+        logic_data = json.load(f)
 
-    results = evaluate(bot, debug=True, save_log=True)
+    with open("physics_dataset.json") as f:
+        physics_data = json.load(f)
 
-    summarize(results)
+    print("🚀 Running evaluation...")
+
+    start = time.time()
+
+    logic_acc, logic_reason = eval_logic(logic_data)
+    phys_acc, phys_reason = eval_physics(physics_data)
+
+    total_score = (
+        0.4 * logic_acc +
+        0.4 * phys_acc +
+        0.2 * (logic_reason + phys_reason) / 2
+    )
+
+    result = {
+        "name": "PhysicsBot-v1",
+        "logic_acc": logic_acc,
+        "physics_acc": phys_acc,
+        "logic_reason": logic_reason,
+        "physics_reason": phys_reason,
+        "score": total_score,
+        "time": time.time() - start
+    }
+
+    print("\n📊 RESULTS")
+    print(result)
+
+    save_result(result)
+    show_leaderboard()

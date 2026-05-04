@@ -1,0 +1,702 @@
+[
+  {
+    "id": "auto_0",
+    "question": "Find current if voltage is 7V and resistance is 6\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.17",
+    "unit": "A"
+  },
+  {
+    "id": "auto_1",
+    "question": "Find current if voltage is 18V and resistance is 10\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.8",
+    "unit": "A"
+  },
+  {
+    "id": "auto_2",
+    "question": "Find current if voltage is 40V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.35",
+    "unit": "A"
+  },
+  {
+    "id": "auto_3",
+    "question": "Find current if voltage is 38V and resistance is 9\u03a9.",
+    "cot": "I = V/R",
+    "answer": "4.22",
+    "unit": "A"
+  },
+  {
+    "id": "auto_4",
+    "question": "Find current if voltage is 17V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_5",
+    "question": "Find current if voltage is 16V and resistance is 1\u03a9.",
+    "cot": "I = V/R",
+    "answer": "16.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_6",
+    "question": "Find current if voltage is 33V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.83",
+    "unit": "A"
+  },
+  {
+    "id": "auto_7",
+    "question": "Find current if voltage is 22V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.22",
+    "unit": "A"
+  },
+  {
+    "id": "auto_8",
+    "question": "Find current if voltage is 10V and resistance is 7\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.43",
+    "unit": "A"
+  },
+  {
+    "id": "auto_9",
+    "question": "Find current if voltage is 24V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.41",
+    "unit": "A"
+  },
+  {
+    "id": "auto_10",
+    "question": "Find current if voltage is 26V and resistance is 10\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.6",
+    "unit": "A"
+  },
+  {
+    "id": "auto_11",
+    "question": "Find current if voltage is 15V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.75",
+    "unit": "A"
+  },
+  {
+    "id": "auto_12",
+    "question": "Find current if voltage is 32V and resistance is 19\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.68",
+    "unit": "A"
+  },
+  {
+    "id": "auto_13",
+    "question": "Find current if voltage is 5V and resistance is 7\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.71",
+    "unit": "A"
+  },
+  {
+    "id": "auto_14",
+    "question": "Find current if voltage is 26V and resistance is 12\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.17",
+    "unit": "A"
+  },
+  {
+    "id": "auto_15",
+    "question": "Find current if voltage is 6V and resistance is 16\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.38",
+    "unit": "A"
+  },
+  {
+    "id": "auto_16",
+    "question": "Find current if voltage is 19V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.06",
+    "unit": "A"
+  },
+  {
+    "id": "auto_17",
+    "question": "Find current if voltage is 15V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.15",
+    "unit": "A"
+  },
+  {
+    "id": "auto_18",
+    "question": "Find current if voltage is 28V and resistance is 14\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_19",
+    "question": "Find current if voltage is 42V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "10.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_20",
+    "question": "Find current if voltage is 10V and resistance is 19\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.53",
+    "unit": "A"
+  },
+  {
+    "id": "auto_21",
+    "question": "Find current if voltage is 48V and resistance is 5\u03a9.",
+    "cot": "I = V/R",
+    "answer": "9.6",
+    "unit": "A"
+  },
+  {
+    "id": "auto_22",
+    "question": "Find current if voltage is 33V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.83",
+    "unit": "A"
+  },
+  {
+    "id": "auto_23",
+    "question": "Find current if voltage is 36V and resistance is 1\u03a9.",
+    "cot": "I = V/R",
+    "answer": "36.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_24",
+    "question": "Find current if voltage is 24V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.85",
+    "unit": "A"
+  },
+  {
+    "id": "auto_25",
+    "question": "Find current if voltage is 44V and resistance is 16\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.75",
+    "unit": "A"
+  },
+  {
+    "id": "auto_26",
+    "question": "Find current if voltage is 25V and resistance is 14\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.79",
+    "unit": "A"
+  },
+  {
+    "id": "auto_27",
+    "question": "Find current if voltage is 41V and resistance is 20\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.05",
+    "unit": "A"
+  },
+  {
+    "id": "auto_28",
+    "question": "Find current if voltage is 6V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.46",
+    "unit": "A"
+  },
+  {
+    "id": "auto_29",
+    "question": "Find current if voltage is 45V and resistance is 11\u03a9.",
+    "cot": "I = V/R",
+    "answer": "4.09",
+    "unit": "A"
+  },
+  {
+    "id": "auto_30",
+    "question": "Find current if voltage is 19V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.06",
+    "unit": "A"
+  },
+  {
+    "id": "auto_31",
+    "question": "Find current if voltage is 11V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.75",
+    "unit": "A"
+  },
+  {
+    "id": "auto_32",
+    "question": "Find current if voltage is 15V and resistance is 9\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.67",
+    "unit": "A"
+  },
+  {
+    "id": "auto_33",
+    "question": "Find current if voltage is 50V and resistance is 6\u03a9.",
+    "cot": "I = V/R",
+    "answer": "8.33",
+    "unit": "A"
+  },
+  {
+    "id": "auto_34",
+    "question": "Find current if voltage is 37V and resistance is 20\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.85",
+    "unit": "A"
+  },
+  {
+    "id": "auto_35",
+    "question": "Find current if voltage is 19V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "4.75",
+    "unit": "A"
+  },
+  {
+    "id": "auto_36",
+    "question": "Find current if voltage is 8V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.44",
+    "unit": "A"
+  },
+  {
+    "id": "auto_37",
+    "question": "Find current if voltage is 48V and resistance is 20\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.4",
+    "unit": "A"
+  },
+  {
+    "id": "auto_38",
+    "question": "Find current if voltage is 28V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.56",
+    "unit": "A"
+  },
+  {
+    "id": "auto_39",
+    "question": "Find current if voltage is 6V and resistance is 15\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.4",
+    "unit": "A"
+  },
+  {
+    "id": "auto_40",
+    "question": "Find current if voltage is 31V and resistance is 19\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.63",
+    "unit": "A"
+  },
+  {
+    "id": "auto_41",
+    "question": "Find current if voltage is 29V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.71",
+    "unit": "A"
+  },
+  {
+    "id": "auto_42",
+    "question": "Find current if voltage is 38V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.24",
+    "unit": "A"
+  },
+  {
+    "id": "auto_43",
+    "question": "Find current if voltage is 19V and resistance is 3\u03a9.",
+    "cot": "I = V/R",
+    "answer": "6.33",
+    "unit": "A"
+  },
+  {
+    "id": "auto_44",
+    "question": "Find current if voltage is 17V and resistance is 9\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.89",
+    "unit": "A"
+  },
+  {
+    "id": "auto_45",
+    "question": "Find current if voltage is 33V and resistance is 10\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.3",
+    "unit": "A"
+  },
+  {
+    "id": "auto_46",
+    "question": "Find current if voltage is 23V and resistance is 10\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.3",
+    "unit": "A"
+  },
+  {
+    "id": "auto_47",
+    "question": "Find current if voltage is 22V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "5.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_48",
+    "question": "Find current if voltage is 11V and resistance is 7\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.57",
+    "unit": "A"
+  },
+  {
+    "id": "auto_49",
+    "question": "Find current if voltage is 39V and resistance is 11\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.55",
+    "unit": "A"
+  },
+  {
+    "id": "auto_50",
+    "question": "Find current if voltage is 40V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.22",
+    "unit": "A"
+  },
+  {
+    "id": "auto_51",
+    "question": "Find current if voltage is 47V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.76",
+    "unit": "A"
+  },
+  {
+    "id": "auto_52",
+    "question": "Find current if voltage is 40V and resistance is 1\u03a9.",
+    "cot": "I = V/R",
+    "answer": "40.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_53",
+    "question": "Find current if voltage is 15V and resistance is 14\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.07",
+    "unit": "A"
+  },
+  {
+    "id": "auto_54",
+    "question": "Find current if voltage is 33V and resistance is 3\u03a9.",
+    "cot": "I = V/R",
+    "answer": "11.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_55",
+    "question": "Find current if voltage is 8V and resistance is 19\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.42",
+    "unit": "A"
+  },
+  {
+    "id": "auto_56",
+    "question": "Find current if voltage is 49V and resistance is 12\u03a9.",
+    "cot": "I = V/R",
+    "answer": "4.08",
+    "unit": "A"
+  },
+  {
+    "id": "auto_57",
+    "question": "Find current if voltage is 20V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.54",
+    "unit": "A"
+  },
+  {
+    "id": "auto_58",
+    "question": "Find current if voltage is 28V and resistance is 1\u03a9.",
+    "cot": "I = V/R",
+    "answer": "28.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_59",
+    "question": "Find current if voltage is 30V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "7.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_60",
+    "question": "Find current if voltage is 18V and resistance is 8\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.25",
+    "unit": "A"
+  },
+  {
+    "id": "auto_61",
+    "question": "Find current if voltage is 37V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.85",
+    "unit": "A"
+  },
+  {
+    "id": "auto_62",
+    "question": "Find current if voltage is 31V and resistance is 10\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.1",
+    "unit": "A"
+  },
+  {
+    "id": "auto_63",
+    "question": "Find current if voltage is 42V and resistance is 11\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.82",
+    "unit": "A"
+  },
+  {
+    "id": "auto_64",
+    "question": "Find current if voltage is 31V and resistance is 14\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.21",
+    "unit": "A"
+  },
+  {
+    "id": "auto_65",
+    "question": "Find current if voltage is 22V and resistance is 6\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.67",
+    "unit": "A"
+  },
+  {
+    "id": "auto_66",
+    "question": "Find current if voltage is 12V and resistance is 11\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.09",
+    "unit": "A"
+  },
+  {
+    "id": "auto_67",
+    "question": "Find current if voltage is 23V and resistance is 12\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.92",
+    "unit": "A"
+  },
+  {
+    "id": "auto_68",
+    "question": "Find current if voltage is 48V and resistance is 19\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.53",
+    "unit": "A"
+  },
+  {
+    "id": "auto_69",
+    "question": "Find current if voltage is 12V and resistance is 20\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.6",
+    "unit": "A"
+  },
+  {
+    "id": "auto_70",
+    "question": "Find current if voltage is 28V and resistance is 5\u03a9.",
+    "cot": "I = V/R",
+    "answer": "5.6",
+    "unit": "A"
+  },
+  {
+    "id": "auto_71",
+    "question": "Find current if voltage is 24V and resistance is 16\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_72",
+    "question": "Find current if voltage is 20V and resistance is 6\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.33",
+    "unit": "A"
+  },
+  {
+    "id": "auto_73",
+    "question": "Find current if voltage is 43V and resistance is 3\u03a9.",
+    "cot": "I = V/R",
+    "answer": "14.33",
+    "unit": "A"
+  },
+  {
+    "id": "auto_74",
+    "question": "Find current if voltage is 28V and resistance is 17\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.65",
+    "unit": "A"
+  },
+  {
+    "id": "auto_75",
+    "question": "Find current if voltage is 31V and resistance is 8\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.88",
+    "unit": "A"
+  },
+  {
+    "id": "auto_76",
+    "question": "Find current if voltage is 21V and resistance is 2\u03a9.",
+    "cot": "I = V/R",
+    "answer": "10.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_77",
+    "question": "Find current if voltage is 24V and resistance is 18\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.33",
+    "unit": "A"
+  },
+  {
+    "id": "auto_78",
+    "question": "Find current if voltage is 11V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.85",
+    "unit": "A"
+  },
+  {
+    "id": "auto_79",
+    "question": "Find current if voltage is 30V and resistance is 2\u03a9.",
+    "cot": "I = V/R",
+    "answer": "15.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_80",
+    "question": "Find current if voltage is 27V and resistance is 16\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.69",
+    "unit": "A"
+  },
+  {
+    "id": "auto_81",
+    "question": "Find current if voltage is 28V and resistance is 16\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.75",
+    "unit": "A"
+  },
+  {
+    "id": "auto_82",
+    "question": "Find current if voltage is 50V and resistance is 20\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_83",
+    "question": "Find current if voltage is 18V and resistance is 11\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.64",
+    "unit": "A"
+  },
+  {
+    "id": "auto_84",
+    "question": "Find current if voltage is 28V and resistance is 14\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_85",
+    "question": "Find current if voltage is 17V and resistance is 13\u03a9.",
+    "cot": "I = V/R",
+    "answer": "1.31",
+    "unit": "A"
+  },
+  {
+    "id": "auto_86",
+    "question": "Find current if voltage is 41V and resistance is 6\u03a9.",
+    "cot": "I = V/R",
+    "answer": "6.83",
+    "unit": "A"
+  },
+  {
+    "id": "auto_87",
+    "question": "Find current if voltage is 44V and resistance is 14\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.14",
+    "unit": "A"
+  },
+  {
+    "id": "auto_88",
+    "question": "Find current if voltage is 34V and resistance is 12\u03a9.",
+    "cot": "I = V/R",
+    "answer": "2.83",
+    "unit": "A"
+  },
+  {
+    "id": "auto_89",
+    "question": "Find current if voltage is 34V and resistance is 1\u03a9.",
+    "cot": "I = V/R",
+    "answer": "34.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_90",
+    "question": "Find current if voltage is 39V and resistance is 8\u03a9.",
+    "cot": "I = V/R",
+    "answer": "4.88",
+    "unit": "A"
+  },
+  {
+    "id": "auto_91",
+    "question": "Find current if voltage is 39V and resistance is 4\u03a9.",
+    "cot": "I = V/R",
+    "answer": "9.75",
+    "unit": "A"
+  },
+  {
+    "id": "auto_92",
+    "question": "Find current if voltage is 11V and resistance is 15\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.73",
+    "unit": "A"
+  },
+  {
+    "id": "auto_93",
+    "question": "Find current if voltage is 32V and resistance is 7\u03a9.",
+    "cot": "I = V/R",
+    "answer": "4.57",
+    "unit": "A"
+  },
+  {
+    "id": "auto_94",
+    "question": "Find current if voltage is 10V and resistance is 20\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.5",
+    "unit": "A"
+  },
+  {
+    "id": "auto_95",
+    "question": "Find current if voltage is 36V and resistance is 10\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.6",
+    "unit": "A"
+  },
+  {
+    "id": "auto_96",
+    "question": "Find current if voltage is 27V and resistance is 5\u03a9.",
+    "cot": "I = V/R",
+    "answer": "5.4",
+    "unit": "A"
+  },
+  {
+    "id": "auto_97",
+    "question": "Find current if voltage is 24V and resistance is 8\u03a9.",
+    "cot": "I = V/R",
+    "answer": "3.0",
+    "unit": "A"
+  },
+  {
+    "id": "auto_98",
+    "question": "Find current if voltage is 9V and resistance is 11\u03a9.",
+    "cot": "I = V/R",
+    "answer": "0.82",
+    "unit": "A"
+  },
+  {
+    "id": "auto_99",
+    "question": "Find current if voltage is 32V and resistance is 2\u03a9.",
+    "cot": "I = V/R",
+    "answer": "16.0",
+    "unit": "A"
+  }
+]
