@@ -1,21 +1,62 @@
-streamlit
+# =========================
+# CORE
+# =========================
+requests==2.32.3
+python-dotenv==1.0.1
+pydantic==2.10.6
+pydantic-settings==2.7.1
+loguru==0.7.3
 
-langchain==0.1.20
-langchain-community==0.0.38
-langchain-core==0.1.46
-langchain-text-splitters==0.0.1
+# =========================
+# LANGCHAIN STACK (COMPATIBLE)
+# =========================
+langchain-core==0.3.32
+langchain==0.3.16
+langchain-community==0.3.16
+langchain-text-splitters==0.3.5
 
-langgraph==0.0.40
+# =========================
+# LANGGRAPH (MATCH CORE 0.3.x)
+# =========================
+langgraph==0.2.68
+langgraph-checkpoint==2.0.10
 
+# =========================
+# VECTOR DB (QDRANT)
+# =========================
 qdrant-client==1.9.1
+
+# =========================
+# EMBEDDING + RERANK
+# =========================
 sentence-transformers==2.7.0
 rank-bm25==0.2.2
 
-transformers==4.40.2
-accelerate==0.29.3
-bitsandbytes==0.43.1
+# =========================
+# HF MODEL (NO OLLAMA)
+# =========================
+transformers==4.44.2
+accelerate==0.33.0
 torch==2.2.2
+bitsandbytes==0.43.1
 
+# =========================
+# UI
+# =========================
+streamlit==1.37.1
+
+# =========================
+# DOC PROCESSING
+# =========================
+pypdf==5.2.0
+python-docx==1.1.2
+
+# =========================
+# OPTIONAL (ONLY IF NEEDED)
+# =========================
+duckduckgo-search==6.3.0
+
+# =========================
+# STABILITY FIX
+# =========================
 numpy<2
-python-dotenv
-duckduckgo-search
