@@ -60,3 +60,9 @@ duckduckgo-search==6.3.0
 # STABILITY FIX
 # =========================
 numpy<2
+
+# =========================
+# API / ASGI
+# =========================
+fastapi
+uvicorn[standard]
